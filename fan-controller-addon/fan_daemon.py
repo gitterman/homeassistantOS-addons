@@ -3,6 +3,20 @@ import time
 import os
 import shutil
 
+# Set environment variables for pigpio
+pigpio_host =     os.getenv('PIGPIO_ADDR', 'localhost')  # Ensure pigpiod is running on localhost
+pigpio_port = int(os.getenv('PIGPIO_PORT', 8888))        # Default pigpio port
+
+# Connect to pigpiod
+try:
+    pi = pigpio.pi( pigpio_host, pigpio_port )
+    if not pi.connected:
+        print( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
+        exit( 1 )
+except Exception as e:
+    print( f"Failed to connect to pigpiod: {str(e)}" )
+    exit( 1 )
+
 # Read configuration from environment variables or set defaults
 GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
 PWM_FREQ        =   int( os.environ.get( 'PWM_FREQ',     25000   ) )  # 25 kHz for smooth fan PWM
