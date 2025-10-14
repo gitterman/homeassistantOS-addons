@@ -1,6 +1,6 @@
 {
   "name": "Fan Controller",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "network_mode": "host",
   "slug": "fan_controller",
   "description": "Fan control using a PI controller",
@@ -12,7 +12,7 @@
   "boot": "auto",
   "options": {
     "GPIO_PIN": 18,
-    "PWM_FREQ": 25000,
+    "PWM_FREQ": 50,
     "targetTEMP": 55.0,
     "minTEMP": 50.0,
     "maxTEMP": 75.0,
@@ -29,6 +29,8 @@
     "UPDATE_INTERVAL": "int"
   },
   "environment": {
+    "PIGPIO_ADDR": "localhost",
+    "PIGPIO_PORT": "8888",
     "LOG_PATH": "/data/fan_daemon.log"
   }
 }
