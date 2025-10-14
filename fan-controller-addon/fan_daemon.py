@@ -7,15 +7,6 @@ import shutil
 pigpio_host =     os.getenv('PIGPIO_ADDR', 'localhost')  # Ensure pigpiod is running on localhost
 pigpio_port = int(os.getenv('PIGPIO_PORT', 8888))        # Default pigpio port
 
-# Connect to pigpiod
-try:
-    pi = pigpio.pi( pigpio_host, pigpio_port )
-    if not pi.connected:
-        print( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
-#        exit( 1 )
-except Exception as e:
-    print( f"Failed to connect to pigpiod: {str(e)}" )
-#    exit( 1 )
 
 # Read configuration from environment variables or set defaults
 GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
@@ -28,8 +19,19 @@ UPDATE_INTERVAL =   int( os.environ.get( 'UPDATE_INTERVAL', 10   ) )  # seconds
 MAX_LOG_SIZE    = 5 * 1024 * 1024                                     # 5 MB
 LOG_PATH        = "/data/fan_daemon.log"                              # Log file path
 
+def check_pigpiod():
+    """check access to pigpiod daemon"""
+    try:
+        pi = pigpio.pi( pigpio_host, pigpio_port )
+        if not pi.connected:
+            log( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
+            exit( 1 )
+    except Exception as e:
+        log( f"Failed to connect to pigpiod: {str(e)}" )
+        exit( 1 )
+
 def rotate_log():
-    """Rotate the log file if it exceeds MAX_LOG_SIZE."""
+    """rotate the log file if it exceeds MAX_LOG_SIZE"""
     if os.path.exists( LOG_PATH ) and os.path.getsize( LOG_PATH ) > MAX_LOG_SIZE:
         try:
             if os.path.exists( LOG_PATH + ".1" ):
@@ -39,7 +41,7 @@ def rotate_log():
             print( f"Log rotation failed: {e}" )
 
 def log( message ):
-    """Append message to the log and rotate if needed."""
+    """append message to the log and rotate if needed"""
     rotate_log()
     timestamp = time.strftime( "%Y-%m-%d %H:%M:%S" )
     with open( LOG_PATH, "a" ) as f:
@@ -53,7 +55,7 @@ def read_temp():
         return( 0 )
 
 def temp_to_percent( temp ):
-    """Convert temperature to fan speed percentage with min/max temperature limits."""
+    """convert temperature to fan speed percentage with min/max temperature limits"""
     if temp < minTEMP:
         return(   0 ) # Fan off if temp is lower than minTEMP
     elif temp > maxTEMP:
@@ -63,13 +65,16 @@ def temp_to_percent( temp ):
         return minPWM + ( temp - minTEMP ) / ( maxTEMP - minTEMP ) * ( 100 - minPWM )
 
 def set_fan_speed( pi, gpio_pin, percent ):
-    """Set the fan speed using hardware PWM."""
+    """set the fan speed using hardware PWM"""
     percent = max( 0, min(percent, 100) )  # Ensure it's between 0 and 100
     duty    = int( percent / 100 * 1_000_000 )
     pi.hardware_PWM( gpio_pin, PWM_FREQ, duty )
     log( f"Set fan speed to {percent:.1f}% (duty={duty})" )
 
 def main():
+    check_pigpiod()
+    log( f"everything ok" )
+    
     while True:
         time.sleep( 10 )
 
