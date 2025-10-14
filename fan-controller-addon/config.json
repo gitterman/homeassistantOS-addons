@@ -1,17 +1,27 @@
 {
   "name": "Fan Controller",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "slug": "fan_controller",
-  "description": "PI-controlled fan daemon using pigpio",
+  "description": "Fan control using a PI controller",
+  "arch": [
+    "aarch64"
+  ],
+  "url": "https://github.com/gitterman/homeassistantOS-addons",
   "startup": "application",
   "boot": "auto",
-  "init": false,
-  "host_network": true,
-  "privileged": [],
-  "hassio_api": false,
-  "hassio_role": "default",
-  "apparmor": false,
-  "arch": ["aarch64", "armv7"],
-  "schema": {},
-  "options": {}
+  "options": {
+    "target_temp": 55,
+    "min_temp": 40,
+    "max_temp": 70,
+    "min_duty_cycle": 30
+  },
+  "schema": {
+    "target_temp": "int",
+    "min_temp": "int",
+    "max_temp": "int",
+    "min_duty_cycle": "int"
+  },
+  "environment": {
+    "LOG_PATH": "/data/fan_daemon.log"
+  }
 }
