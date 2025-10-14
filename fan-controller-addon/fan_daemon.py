@@ -10,7 +10,7 @@ targetTEMP      = 55.0             # Target temperature in °C
 minPWM          = 30               # Minimum fan duty cycle in %
 UPDATE_INTERVAL = 10               # seconds
 MAX_LOG_SIZE    = 5 * 1024 * 1024  # 5 MB
-LOG_PATH        = "/config/fan_daemon.log"
+LOG_PATH        = "/data/fan_daemon.log"
 
 # PI controller constants (tune these!)
 pTemp = 10.0    # Proportional gain
