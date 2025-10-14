@@ -12,10 +12,10 @@ try:
     pi = pigpio.pi( pigpio_host, pigpio_port )
     if not pi.connected:
         print( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
-        exit( 1 )
+#        exit( 1 )
 except Exception as e:
     print( f"Failed to connect to pigpiod: {str(e)}" )
-    exit( 1 )
+#    exit( 1 )
 
 # Read configuration from environment variables or set defaults
 GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
@@ -70,6 +70,9 @@ def set_fan_speed( pi, gpio_pin, percent ):
     log( f"Set fan speed to {percent:.1f}% (duty={duty})" )
 
 def main():
+    while True:
+        time.sleep( 10 )
+
     pi = pigpio.pi()
     if not pi.connected:
         raise SystemExit( "Cannot connect to pigpiod" )
