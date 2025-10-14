@@ -1,6 +1,6 @@
 {
   "name": "Fan Controller",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "slug": "fan_controller",
   "description": "Fan control using a PI controller",
   "arch": [
