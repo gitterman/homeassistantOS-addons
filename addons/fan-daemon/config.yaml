@@ -45,4 +45,5 @@ environment:
   targetTEMP: "{target_temp}"
   minTEMP: "{min_temp}"
   maxTEMP: "{max_temp}"
-  minPWM: "{min
+  minPWM: "{min_pwm}"
+  UPDATE_INTERVAL: "{update_interval}"
