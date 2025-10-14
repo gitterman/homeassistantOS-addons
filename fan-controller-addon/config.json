@@ -1,6 +1,6 @@
 {
   "name": "Fan Controller",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "slug": "fan_controller",
   "description": "Fan control using a PI controller",
   "arch": [
@@ -10,18 +10,25 @@
   "startup": "application",
   "boot": "auto",
   "options": {
-    "target_temp": 55,
-    "min_temp": 40,
-    "max_temp": 70,
-    "min_duty_cycle": 30
+    "GPIO_PIN": 18,
+    "PWM_FREQ": 25000,
+    "targetTEMP": 55.0,
+    "minTEMP": 50.0,
+    "maxTEMP": 75.0,
+    "minPWM": 30,
+    "UPDATE_INTERVAL": 10
   },
   "schema": {
-    "target_temp": "int",
-    "min_temp": "int",
-    "max_temp": "int",
-    "min_duty_cycle": "int"
+    "GPIO_PIN": "int",
+    "PWM_FREQ": "int",
+    "targetTEMP": "float",
+    "minTEMP": "float",
+    "maxTEMP": "float",
+    "minPWM": "int",
+    "UPDATE_INTERVAL": "int"
   },
   "environment": {
     "LOG_PATH": "/data/fan_daemon.log"
   }
 }
+
