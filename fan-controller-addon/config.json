@@ -1,6 +1,7 @@
 {
   "name": "Fan Controller",
-  "version": "1.0.4",
+  "version": "1.0.5",
+  "network_mode": "host",
   "slug": "fan_controller",
   "description": "Fan control using a PI controller",
   "arch": [
