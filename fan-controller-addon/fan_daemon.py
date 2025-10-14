@@ -10,7 +10,7 @@ pigpio_port = int(os.getenv('PIGPIO_PORT', 8888))        # Default pigpio port
 
 # Read configuration from environment variables or set defaults
 GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
-PWM_FREQ        =   int( os.environ.get( 'PWM_FREQ',     25000   ) )  # 25 kHz for smooth fan PWM
+PWM_FREQ        =   int( os.environ.get( 'PWM_FREQ',        50   ) )  # 50 Hz for mosfet
 targetTEMP      = float( os.environ.get( 'targetTEMP',      55.0 ) )  # Target temperature in °C
 minTEMP         = float( os.environ.get( 'minTEMP',         50.0 ) )  # Min temp for fan off
 maxTEMP         = float( os.environ.get( 'maxTEMP',         75.0 ) )  # Max temp for 100% fan speed
@@ -18,17 +18,6 @@ minPWM          =   int( os.environ.get( 'minPWM',          30   ) )  # Min fan 
 UPDATE_INTERVAL =   int( os.environ.get( 'UPDATE_INTERVAL', 10   ) )  # seconds
 MAX_LOG_SIZE    = 5 * 1024 * 1024                                     # 5 MB
 LOG_PATH        = "/data/fan_daemon.log"                              # Log file path
-
-def check_pigpiod():
-    """check access to pigpiod daemon"""
-    try:
-        pi = pigpio.pi( pigpio_host, pigpio_port )
-        if not pi.connected:
-            log( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
-    #        exit( 1 )
-    except Exception as e:
-        log( f"Failed to connect to pigpiod: {str(e)}" )
-    #    exit( 1 )
 
 def rotate_log():
     """rotate the log file if it exceeds MAX_LOG_SIZE"""
@@ -72,13 +61,7 @@ def set_fan_speed( pi, gpio_pin, percent ):
     log( f"Set fan speed to {percent:.1f}% (duty={duty})" )
 
 def main():
-    check_pigpiod()
-    log( f"everything ok" )
-    
-    while True:
-        time.sleep( 10 )
-
-    pi = pigpio.pi()
+    pi = pigpio.pi( pigpio_host, pigpio_port )
     if not pi.connected:
         raise SystemExit( "Cannot connect to pigpiod" )
 
