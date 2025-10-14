@@ -61,9 +61,10 @@ def set_fan_speed( pi, gpio_pin, percent ):
     log( f"Set fan speed to {percent:.1f}% (duty={duty})" )
 
 def main():
-    pi = pigpio.pi( pigpio_host, pigpio_port )
+    #pi = pigpio.pi( pigpio_host, pigpio_port )
+    pi = pigpio.pi( 'localhost', 8888 )
     if not pi.connected:
-        raise SystemExit( "Cannot connect to pigpiod" )
+        raise SystemExit( "Cannot connect to pigpiod on localhost" )
 
     log( "Fan daemon started" )
     try:
