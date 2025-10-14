@@ -1,11 +1,11 @@
 name: Fan Daemon
 version: "1.1.0"
 slug: fan-daemon
-description: |
-  Raspberry Pi fan speed controller based on PI-controlled PWM 
+description: "Raspberry Pi fan speed controller based on PI-controlled PWM"
 arch:
   - armv7
   - aarch64
+url: https://github.com/gitterman/homeassistantOS-addons
 startup: application
 boot: auto
 init: false
