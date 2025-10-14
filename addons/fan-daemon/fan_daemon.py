@@ -4,8 +4,8 @@ import os
 import shutil
 
 # Read configuration from environment variables or set defaults
-pigpio_host     =        os.environ.get( 'PIGPIO_ADDR', 'localhost')  # Ensure pigpiod is running on localhost
-pigpio_port     =   int( os.environ.get( 'PIGPIO_PORT',   8888   ) )  # Default pigpio port
+pigpio_host     =        os.getenv('PIGPIO_ADDR', 'localhost')        # Ensure pigpiod is running on localhost
+pigpio_port     =   int( os.getenv('PIGPIO_ADDR', 8888 ) )            # Default pigpio port
 
 GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
 PWM_FREQ        =   int( os.environ.get( 'PWM_FREQ',        50   ) )  # 50 Hz for mosfet
