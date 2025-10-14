@@ -25,10 +25,10 @@ def check_pigpiod():
         pi = pigpio.pi( pigpio_host, pigpio_port )
         if not pi.connected:
             log( f"Can't connect to pigpiod at {pigpio_host}:{pigpio_port}" )
-            exit( 1 )
+    #        exit( 1 )
     except Exception as e:
         log( f"Failed to connect to pigpiod: {str(e)}" )
-        exit( 1 )
+    #    exit( 1 )
 
 def rotate_log():
     """rotate the log file if it exceeds MAX_LOG_SIZE"""
