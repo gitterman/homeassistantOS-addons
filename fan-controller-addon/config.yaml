@@ -1,0 +1,27 @@
+name: Fan Daemon
+version: "1.1.0"
+slug: fan-daemon
+description: |
+  Raspberry Pi fan speed controller based on PI-controlled PWM 
+arch:
+  - armv7
+  - aarch64
+startup: application
+boot: auto
+init: false
+hassio_api: false
+host_network: true
+options:
+  pigpio_addr: "localhost"
+schema:
+  pigpio_addr: str
+environment:
+  PIGPIO_ADDR: "{pigpio_addr}"
+  PIGPIO_PORT: "8888"
+  GPIO_PIN: "18"
+  PWM_FREQ: "50"
+  targetTEMP: "55.0"
+  minTEMP: "50.0"
+  maxTEMP: "75.0"
+  minPWM: "30"
+  UPDATE_INTERVAL: "10"
