@@ -62,7 +62,7 @@ def set_fan_speed( pi, gpio_pin, percent ):
 
 def main():
     #pi = pigpio.pi( pigpio_host, pigpio_port )
-    pi = pigpio.pi( 'localhost', 8888 )
+    pi = pigpio.pi( '192.168.129.182', 8888 )
     if not pi.connected:
         raise SystemExit( "Cannot connect to pigpiod on localhost" )
 
