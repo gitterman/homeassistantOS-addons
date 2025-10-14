@@ -3,18 +3,6 @@ import time
 import os
 import shutil
 
-# Debugging: Print environment variables
-print("Environment Variables:")
-print(f"PIGPIO_ADDR: {os.getenv('PIGPIO_ADDR')}")
-print(f"PIGPIO_PORT: {os.getenv('PIGPIO_PORT')}")
-print(f"GPIO_PIN: {os.getenv('GPIO_PIN')}")
-print(f"PWM_FREQ: {os.getenv('PWM_FREQ')}")
-print(f"targetTEMP: {os.getenv('targetTEMP')}")
-print(f"minTEMP: {os.getenv('minTEMP')}")
-print(f"maxTEMP: {os.getenv('maxTEMP')}")
-print(f"minPWM: {os.getenv('minPWM')}")
-print(f"UPDATE_INTERVAL: {os.getenv('UPDATE_INTERVAL')}")
-
 # Read configuration from environment variables or set defaults
 pigpio_host     =        os.getenv('PIGPIO_ADDR', 'localhost')        # Ensure pigpiod is running on localhost
 pigpio_port     =   int( os.getenv('PIGPIO_PORT', 8888 ) )            # Default pigpio port
