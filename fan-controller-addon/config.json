@@ -1,0 +1,17 @@
+{
+  "name": "Fan Controller",
+  "version": "1.0.0",
+  "slug": "fan_controller",
+  "description": "PI-controlled fan daemon using pigpio",
+  "startup": "application",
+  "boot": "auto",
+  "init": false,
+  "host_network": true,
+  "privileged": [],
+  "hassio_api": false,
+  "hassio_role": "default",
+  "apparmor": false,
+  "arch": ["aarch64", "armv7"],
+  "schema": {},
+  "options": {}
+}
