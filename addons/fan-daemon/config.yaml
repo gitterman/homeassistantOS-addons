@@ -11,17 +11,38 @@ boot: auto
 init: false
 hassio_api: false
 host_network: true
+
+# ✅ These are the default values shown in the UI
 options:
   pigpio_addr: "localhost"
+  pigpio_port: 8888
+  gpio_pin: 18
+  pwm_freq: 50
+  target_temp: 55.0
+  min_temp: 50.0
+  max_temp: 75.0
+  min_pwm: 30
+  update_interval: 10
+
+# ✅ This defines the editable config fields
 schema:
   pigpio_addr: str
+  pigpio_port: int
+  gpio_pin: int
+  pwm_freq: int
+  target_temp: float
+  min_temp: float
+  max_temp: float
+  min_pwm: int
+  update_interval: int
+
+# ✅ These get injected as environment variables to your script
 environment:
   PIGPIO_ADDR: "{pigpio_addr}"
-  PIGPIO_PORT: "8888"
-  GPIO_PIN: "18"
-  PWM_FREQ: "50"
-  targetTEMP: "55.0"
-  minTEMP: "50.0"
-  maxTEMP: "75.0"
-  minPWM: "30"
-  UPDATE_INTERVAL: "10"
+  PIGPIO_PORT: "{pigpio_port}"
+  GPIO_PIN: "{gpio_pin}"
+  PWM_FREQ: "{pwm_freq}"
+  targetTEMP: "{target_temp}"
+  minTEMP: "{min_temp}"
+  maxTEMP: "{max_temp}"
+  minPWM: "{min
