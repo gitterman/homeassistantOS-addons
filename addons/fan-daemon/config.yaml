@@ -33,15 +33,3 @@ schema:
   max_temp: float
   min_pwm: int
   update_interval: int
-
-environment:
-  PIGPIO_ADDR: "${pigpio_addr}"
-  PIGPIO_PORT: "${pigpio_port}"
-  GPIO_PIN: "${gpio_pin}"
-  PWM_FREQ: "${pwm_freq}"
-  targetTEMP: "${target_temp}"
-  minTEMP: "${min_temp}"
-  maxTEMP: "${max_temp}"
-  minPWM: "${min_pwm}"
-  UPDATE_INTERVAL: "${update_interval}"
-
