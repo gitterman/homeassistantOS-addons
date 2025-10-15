@@ -27,6 +27,9 @@ Fan speed is adjusted P-I controlled based on CPU temperature to provide quiet a
 ## ⚙️ Configuration
 
 This add-on can be configured via the Home Assistant UI or by editing the add-on's options.
+Don't chose a too high PWM frequency which the mosfet cannot switch.
+'min_temp' is the temperature below which the fan is switch off.
+'max_temp' is the temperature for 100% fan speed.
 
 ### Example configuration:
 
