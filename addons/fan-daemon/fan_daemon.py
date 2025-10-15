@@ -44,7 +44,6 @@ def set_fan_speed( pi, gpio_pin, percent ):
     percent = max( 0, min(percent, 100) )  # Ensure it's between 0 and 100
     duty    = int( percent / 100 * 1_000_000 )
     pi.hardware_PWM( gpio_pin, PWM_FREQ, duty )
-    log( f"set fan speed to {percent:.1f}% (duty={duty})" )
 
 def main():
     log( f"connecting to pigpiod at {pigpio_host}:{pigpio_port}" )

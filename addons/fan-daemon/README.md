@@ -1,7 +1,7 @@
 # 🌀 Fan Daemon Add-on for Home Assistant
 
 This Home Assistant add-on controls a fan connected to a Raspberry Pi using PWM via the `pigpio` daemon.  
-It adjusts fan speed based on CPU temperature to provide quiet and efficient cooling.
+Fan speed is adjusted P-I controlled based on CPU temperature to provide quiet and efficient cooling.
 
 ---
 
