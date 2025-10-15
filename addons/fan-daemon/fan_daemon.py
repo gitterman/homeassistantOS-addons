@@ -30,6 +30,11 @@ def log( message ):
     timestamp = time.strftime( "%Y-%m-%d %H:%M:%S" )
     print(f"[{timestamp}] {message}", flush=True)
 
+def log_current_config():
+    log( "Current configuration:" )
+    for key, value in options.items():
+        log( f"  {key}: {value}" )
+
 def read_temp():
     try:
         with open( "/sys/class/thermal/thermal_zone0/temp" ) as f:
@@ -51,6 +56,8 @@ def main():
         raise SystemExit( "could not connect to pigpiod" )
 
     log( "fan daemon started" )
+    log_current_config()                               # show current configuration
+
     stop_requested = False
     integral_sum   =  0 
     output         = 50                                # start PI at 50% so it catches up quickly
