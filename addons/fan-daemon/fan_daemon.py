@@ -2,6 +2,7 @@ import pigpio
 import time
 import os
 import json
+import signal
 
 # ---------- Load options from the options.json file Home Assistant injects into the container ----------
 try:
@@ -24,8 +25,6 @@ minPWM          =   int( options.get('min_pwm',         30   ) )       # Min fan
 UPDATE_INTERVAL =   int( options.get('update_interval', 10   ) )       # Update interval in seconds
 pTemp           = float( options.get('pTemp',           10.0 ) )       # Proportional gain 
 iTemp           = float( options.get('iTemp',            0.4 ) )       # Integral gain
-
-integral_sum    = 0
 
 def log( message ):
     timestamp = time.strftime( "%Y-%m-%d %H:%M:%S" )
@@ -52,9 +51,16 @@ def main():
         raise SystemExit( "could not connect to pigpiod" )
 
     log( "fan daemon started" )
-    global integral_sum
+    stop_requested = False
+    integral_sum    = 0 
+
+    def handle_sigterm( signum, frame ):
+        nonlocal stop_requested
+        stop_requested = True
+
+    signal.signal(signal.SIGTERM, handle_sigterm)
     try:
-        while True:
+        while not stop_requested:
             temp          = read_temp()
             error         = temp - targetTEMP
             integral_sum += error * UPDATE_INTERVAL

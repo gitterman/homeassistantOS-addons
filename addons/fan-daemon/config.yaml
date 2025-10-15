@@ -1,5 +1,5 @@
 name: Fan Daemon
-version: "1.1.5"
+version: "1.1.6"
 slug: fan-daemon
 description: "Raspberry Pi fan speed controller based on PI-controlled PWM"
 arch:
