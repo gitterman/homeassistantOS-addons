@@ -32,7 +32,7 @@ def read_temp():
     try:
         with open( "/sys/class/thermal/thermal_zone0/temp" ) as f:
             return( int( f.read() ) / 1000.0 )
-    except Exception as {e}:
+    except Exception as e:
         log( f"failed to read temperature: {e}" )
         return( 0 )
 
