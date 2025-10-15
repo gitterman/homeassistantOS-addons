@@ -1,5 +1,5 @@
 name: Fan Daemon
-version: "1.1.3"
+version: "1.1.4"
 slug: fan-daemon
 description: "Raspberry Pi fan speed controller based on PI-controlled PWM"
 arch:
@@ -22,6 +22,8 @@ options:
   max_temp: 75.0
   min_pwm: 30
   update_interval: 10
+  pTemp: 10.0
+  iTemp: 0.4
 
 schema:
   pigpio_addr: str
@@ -33,3 +35,6 @@ schema:
   max_temp: float
   min_pwm: int
   update_interval: int
+  pTemp: float
+  iTemp: float
+

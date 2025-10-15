@@ -22,7 +22,10 @@ minTEMP         = float( options.get('min_temp',        50.0 ) )       # Min tem
 maxTEMP         = float( options.get('max_temp',        75.0 ) )       # Max temp for 100% fan speed
 minPWM          =   int( options.get('min_pwm',         30   ) )       # Min fan duty cycle in %
 UPDATE_INTERVAL =   int( options.get('update_interval', 10   ) )       # Update interval in seconds
+pTemp           = float( options.get('pTemp',           10.0 ) )       # Proportional gain 
+iTemp           = float( options.get('iTemp',            0.4 ) )       # Integral gain
 
+integral_sum    = 0
 
 def log( message ):
     timestamp = time.strftime( "%Y-%m-%d %H:%M:%S" )
@@ -35,16 +38,6 @@ def read_temp():
     except Exception as e:
         log( f"failed to read temperature: {e}" )
         return( 0 )
-
-def temp_to_percent( temp ):
-    """convert temperature to fan speed percentage with min/max temperature limits"""
-    if temp < minTEMP:
-        return(   0 ) # Fan off if temp is lower than minTEMP
-    elif temp > maxTEMP:
-        return( 100 ) # Fan at 100% if temp is higher than maxTEMP
-    else:
-        # Linearly map the temperature between minTEMP and maxTEMP to a percentage
-        return( minPWM + ( temp - minTEMP ) / ( maxTEMP - minTEMP ) * ( 100 - minPWM ) )
 
 def set_fan_speed( pi, gpio_pin, percent ):
     """set the fan speed using hardware PWM"""
@@ -60,10 +53,22 @@ def main():
         raise SystemExit( "could not connect to pigpiod" )
 
     log( "fan daemon started" )
+    global integral_sum
     try:
         while True:
-            temp    = read_temp()
-            percent = temp_to_percent( temp )
+            temp          = read_temp()
+            error         = temp - targetTEMP
+            integral_sum += error * UPDATE_INTERVAL
+            output        = pTemp * error + iTemp * integral_sum  # P-I controller output
+
+            if( temp < minTEMP):                                  # clamp output
+                percent      =   0                                # no need for fan
+                integral_sum =   0                                # reset integral avoids windup
+            elif( temp >= maxTEMP ):
+                percent      = 100                                # no need for fan
+            else:
+                percent = max( minPWM, min( output, 100 ) )       # enforce minimum PWM to keep fan spinning
+
             set_fan_speed( pi, GPIO_PIN, percent )
             log( f"temperature: {temp:.1f}°C → fan: {percent:.1f}%" )
             time.sleep( UPDATE_INTERVAL )
