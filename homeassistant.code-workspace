@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../PlatformIO/Projects/akkuMonitor"
+		},
+		{
+			"name": "ATmega8_AD-I2C",
+			"path": "../../PlatformIO/Projects/ATmega8_AD-I2C"
+		}
+	],
+	"settings": {}
+}
