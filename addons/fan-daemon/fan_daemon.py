@@ -1,21 +1,28 @@
 import pigpio
 import time
 import os
-import shutil
+import json
 
-# Read configuration from environment variables or set defaults
-pigpio_host     =        os.getenv('PIGPIO_ADDR', 'localhost')        # Ensure pigpiod is running on localhost
-pigpio_port     =   int( os.getenv('PIGPIO_PORT', 8888 ) )            # Default pigpio port
+# ---------- Load options from the options.json file Home Assistant injects into the container ----------
+try:
+    with open( "/data/options.json", "r" ) as f:
+        options = json.load( f )
+except Exception as e:
+    print( f"Failed to load /data/options.json: {e}" )
+    exit( 1 )
 
-GPIO_PIN        =   int( os.environ.get( 'GPIO_PIN',        18   ) )
-PWM_FREQ        =   int( os.environ.get( 'PWM_FREQ',        50   ) )  # 50 Hz for mosfet
-targetTEMP      = float( os.environ.get( 'targetTEMP',      55.0 ) )  # Target temperature in °C
-minTEMP         = float( os.environ.get( 'minTEMP',         50.0 ) )  # Min temp for fan off
-maxTEMP         = float( os.environ.get( 'maxTEMP',         75.0 ) )  # Max temp for 100% fan speed
-minPWM          =   int( os.environ.get( 'minPWM',          30   ) )  # Min fan duty cycle in %
-UPDATE_INTERVAL =   int( os.environ.get( 'UPDATE_INTERVAL', 10   ) )  # seconds
-MAX_LOG_SIZE    = 5 * 1024 * 1024                                     # 5 MB
-LOG_PATH        = "/data/fan_daemon.log"                              # Log file path
+# ---------- Read configuration from add-on options or set defaults ----------
+pigpio_host     =        options.get('pigpio_addr', 'localhost')       # Ensure pigpiod is running on localhost
+pigpio_port     =   int( options.get('pigpio_port', 8888 ) )           # Default pigpio port
+
+GPIO_PIN        =   int( options.get('gpio_pin',        18   ) )       # GPIO pin to control fan (PWM)
+PWM_FREQ        =   int( options.get('pwm_freq',        50   ) )       # 50 Hz for MOSFET PWM
+targetTEMP      = float( options.get('target_temp',     55.0 ) )       # Target temperature in °C
+minTEMP         = float( options.get('min_temp',        50.0 ) )       # Min temp for fan off
+maxTEMP         = float( options.get('max_temp',        75.0 ) )       # Max temp for 100% fan speed
+minPWM          =   int( options.get('min_pwm',         30   ) )       # Min fan duty cycle in %
+UPDATE_INTERVAL =   int( options.get('update_interval', 10   ) )       # Update interval in seconds
+
 
 def log( message ):
     timestamp = time.strftime( "%Y-%m-%d %H:%M:%S" )
@@ -25,7 +32,7 @@ def read_temp():
     try:
         with open( "/sys/class/thermal/thermal_zone0/temp" ) as f:
             return( int( f.read() ) / 1000.0 )
-    except Exception:
+    except Exception as {e}:
         log( f"failed to read temperature: {e}" )
         return( 0 )
 
