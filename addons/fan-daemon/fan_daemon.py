@@ -52,7 +52,11 @@ def main():
 
     log( "fan daemon started" )
     stop_requested = False
-    integral_sum    = 0 
+    integral_sum   =  0 
+    output         = 50                                # start PI at 50% so it catches up quickly
+    set_fan_speed( pi, GPIO_PIN, output )
+    log( f"fan started with {output}%" )
+    time.sleep( 2 )                                    # allow fan to spin up before control loop
 
     def handle_sigterm( signum, frame ):
         nonlocal stop_requested
